@@ -11,7 +11,7 @@ reg[width-1:0]      shiftregistermem;
 assign serialDataOut=shiftregistermem[0];
 assign parallelDataOut=shiftregistermem;
 always @(posedge clk) begin
-    if(parallelLoad==1) assign shiftregistermem = parallelDataIn;
+    if(parallelLoad==1) shiftregistermem = parallelDataIn;
     else if(peripheralClkEdge==1) begin
 	shiftregistermem = {serialDataIn,shiftregistermem[width-1:1]};
 	$display("balls");
@@ -31,34 +31,59 @@ shiftregister #(8) sr(clk, peripheralClkEdge, parallelLoad, parallelDataIn, seri
 initial clk=0;
 always #10 clk=!clk;
 initial parallelDataIn=16'hA5;
-initial parallelLoad=0;
 initial begin
+parallelLoad=0;
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=1; #45
+serialDataIn=1;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=1; #45
+serialDataIn=1;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=0; #45
+serialDataIn=0;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=1; #45
+serialDataIn=1;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=1; #45
+serialDataIn=1;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
-peripheralClkEdge=0; #45
-serialDataIn=0; #45
+serialDataIn=0;
+peripheralClkEdge=0; #90
 peripheralClkEdge=1; #10
 $display("%b", parallelDataOut);
+parallelLoad=1;
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+parallelLoad=0;
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
+peripheralClkEdge=0; #90
+peripheralClkEdge=1; #10
 peripheralClkEdge=0;
+$display("%b", parallelDataOut);
 end
 
 endmodule
