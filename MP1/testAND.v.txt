@@ -1,0 +1,23 @@
+module testAND;
+reg A[31:0], B[31:0], command[2:0];
+wire result[31:0], carryout, zero, overflow;
+ALU alu (result, carryout, zero, overflow, A, B, command); 
+
+// 16733610   is 00000000111111110101010110101010
+// 1431655765 is 01010101010101010101010101010101
+
+initial begin
+$display("Command    | A                                B                                | Result                          Overflow Carryout Zero | Expected Output");
+A=1431655765;B=16733610;command=4; #1000 
+$display("%b AND  | %b  %b | %b  %b       %b       %b   | ",  command, A, B, result, overflow, carryout, zero);
+A=1431655765;B=16733610;command=5; #1000 
+$display("%b NAND | %b  %b | %b  %b       %b       %b   | ",  command, A, B, result, overflow, carryout, zero);
+A=1431655765;B=16733610;command=6; #1000 
+$display("%b NOR  | %b  %b | %b  %b       %b       %b   | ",  command, A, B, result, overflow, carryout, zero);
+A=1431655765;B=16733610;command=7; #1000 
+$display("%b OR   | %b  %b | %b  %b       %b       %b   | ",  command, A, B, result, overflow, carryout, zero);
+A=1431655765;B=16733610;command=2; #1000 
+$display("%b XOR  | %b  %b | %b  %b       %b       %b   | ",  command, A, B, result, overflow, carryout, zero);
+
+end
+endmodule
