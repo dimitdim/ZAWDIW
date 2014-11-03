@@ -59,21 +59,26 @@ shiftregister sr(clk, sclk_pos, parallel_load, parallel_in, serial_in, parallel_
 // fsm
 finiteStateMachine fsm(clk, cs_con, sclk_pos, parallel_out[7], sr_we, dm_we, addrlatch_en, miso_en, currentstate);
 
-// flipflop and miso buffer
+// fault injector
+
+// flipflop and miso buffer and fault injection
 always @(posedge clk) begin
-	if (addrlatch_en==1) dm_addr=parallel_out[6:0];
+	if (addrlatch_en==1) begin
+		if (faultinjector_pin != 1) dm_addr=parallel_out[6:0];
+		else dm_addr={parallel_out[6:3],1'b1,parallel_out[1:0]};
+	end
 	if (sclk_neg == 1 && miso_en==1) begin
 		miso_pin = serial_out;
 	end
-        if (dm_we==1) begin
-	$display("dm_we: %b | dm_addr: %b | dm_in: %b", addrlatch_en, dm_addr, parallel_out);
-	end
-        if (addrlatch_en==1) begin
-	$display("addrlatch_en: %b | dm_addr: %b | parallel_out: %b", addrlatch_en, dm_addr, parallel_out);
-	end
-        if (sr_we==1) begin
-	$display("sr_we: %b | dm_out: %b | dm_addr: %b| parallel_out: %b", sr_we, dm_out, dm_addr, parallel_out);
-	end
+//        if (dm_we==1) begin
+//	$display("dm_we: %b | dm_addr: %b | dm_in: %b", addrlatch_en, dm_addr, parallel_out);
+//	end
+//        if (addrlatch_en==1) begin
+//	$display("addrlatch_en: %b | dm_addr: %b | parallel_out: %b", addrlatch_en, dm_addr, parallel_out);
+//	end
+//        if (sr_we==1) begin
+//	$display("sr_we: %b | dm_out: %b | dm_addr: %b| parallel_out: %b", sr_we, dm_out, dm_addr, parallel_out);
+//	end
 //	if (dm_we==1) begin
 //		$display("miso_pin: %b | serial_out: %b", miso_pin, serial_out);
 //		$display("sr_we: %b | dm_out: %b | parallel_out: %b", sr_we, dm_out, mosi_con, parallel_out);
@@ -106,7 +111,7 @@ wire[3:0] state;
 
 spiMemory dut(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, faultinjector_pin, leds, state);
 
-initial begin clk=0; sclk_pin=0; cs_pin=1; mosi_pin=0; faultinjector_pin=0; end
+initial begin clk=0; sclk_pin=0; cs_pin=1; mosi_pin=0; faultinjector_pin=1; end
 // normal clock
 always #10 clk=!clk;
 always #300 sclk_pin=!sclk_pin;
@@ -131,13 +136,22 @@ initial begin
 cs_pin=0;
 #100
 
-mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=0; #600
+//mosi_pin=1; #600
+//mosi_pin=0; #600
+//mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=0; #600
+
 mosi_pin=0; #600
-mosi_pin=1; #600
 mosi_pin=0; #600
-mosi_pin=1; #600
-mosi_pin=1; #600
-mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
 mosi_pin=0; #600
 
 mosi_pin=1; #600
@@ -153,13 +167,22 @@ cs_pin=1;
 #900
 cs_pin=0;
 
-mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=0; #600
+//mosi_pin=1; #600
+//mosi_pin=0; #600
+//mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=1; #600
+//mosi_pin=1; #600
+
 mosi_pin=0; #600
-mosi_pin=1; #600
 mosi_pin=0; #600
-mosi_pin=1; #600
-mosi_pin=1; #600
-mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
 mosi_pin=1; #600
 
 mosi_pin=0; #600
