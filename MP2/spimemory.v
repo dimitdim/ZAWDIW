@@ -1,110 +1,17 @@
 `include "DataMemory.v"
 `include "ShiftRegister.v"
 `include "inputconditioner.v"
+`include "FSM.v"
 
-module finiteStateMachine(clk, cs, sclk_edge, read_write, sr_we, dm_we, addrlatch_en, miso_en, currentstate);
-input clk, cs, sclk_edge, read_write;
-output reg sr_we, dm_we, addrlatch_en, miso_en;
-//reg sr_we;
-//assign sr_we=sr_wee;
-
-parameter counttime = 8;
-reg [3:0] count = 0;
-output reg [3:0] currentstate = 0;
-
-initial count=0;
-
-always @(posedge clk) begin
-	if (sclk_edge==1) begin
-		count=count+1;
-	end
-	if (cs == 1) begin
-		count=0;
-		currentstate=0;
-	end
-	else case(currentstate)
-		0 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=0;
-			if (count == counttime) begin
-				currentstate = 1;
-                                count=0;
-			end
-		end
-		1 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=1;	
-			miso_en=0;
-			if (read_write == 1) begin
-				currentstate = 2;
-			end else begin
-				currentstate = 5;
-			end
-		end
-		2 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=0;
-			currentstate = 3;
-		end
-		3 : begin
-			sr_we=1; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=0;
-			currentstate = 4;
-		end
-		4 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=1;
-			if (count == counttime)  begin
-				currentstate = 7;
-				count=0;
-			end
-		end
-		5 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=0;
-			if (count == counttime) begin
-				currentstate = 6;
-				count=0;
-			end
-		end
-		6 : begin
-			sr_we=0; 
-			dm_we=1; 
-			addrlatch_en=0;	
-			miso_en=0;
-			currentstate = 7;
-		end
-		7 : begin
-			sr_we=0; 
-			dm_we=0; 
-			addrlatch_en=0;	
-			miso_en=0;		
-			count=0;
-		end
-	endcase
-end
-
-endmodule
-
-module spiMemory(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, faultinjector_pin, leds);
+module spiMemory(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, faultinjector_pin, leds, state);
 input		clk;
 input		sclk_pin;
 input		cs_pin;
-output		miso_pin;
+output reg	miso_pin;
 input		mosi_pin;
 input		faultinjector_pin;
 output[7:0]     leds;
+output[3:0]	state;
 
 // wires for all the input conditioners
 wire cs_con, cs_pos, cs_neg;
@@ -112,15 +19,30 @@ wire mosi_con, mosi_pos, mosi_neg;
 wire sclk_con, sclk_pos, sclk_neg;
 
 wire[7:0] dm_out;
-wire[6:0] dm_addr;
-wire[7:0] sr_out;
+reg[6:0] dm_addr;
+wire dm_we;
+wire[7:0] dm_in;
 
-wire [7:0] parallel_out;
+wire[7:0] parallel_out;
 wire serial_out;
+wire parallel_load;
+wire serial_in;
+wire[7:0] parallel_in;
 
-wire sr_we, dm_we, addrlatch_en, miso_en;
-wire [3:0] currentstate;
+wire sr_we, addrlatch_en, miso_en;
+wire[3:0] currentstate;
 
+assign dm_in=parallel_out;
+assign parallel_load=sr_we;
+assign parallel_in=dm_out;
+assign serial_in=mosi_con;
+assign leds[3]=miso_en;
+assign leds[2]=addrlatch_en;
+assign leds[1]=dm_we;
+assign leds[0]=sr_we;
+assign state=currentstate;
+
+initial dm_addr=0;
 //initial parallel_out=0;
 
 // input conditioners
@@ -129,21 +51,36 @@ inputconditioner mosi_conditioner(clk, mosi_pin, mosi_con, mosi_pos, mosi_neg);
 inputconditioner sclk_conditioner(clk, sclk_pin, sclk_con, sclk_pos, sclk_neg);
 
 // data memory
-DataMemory dm(clk, dm_out, dm_addr, dm_we, sr_out);
+DataMemory dm(clk, dm_out, dm_addr, dm_we, dm_in);
 
 // shift register
-shiftregister sr(clk, sclk_pos, sr_we, dm_out, mosi_con, parallel_out, serial_out);
+shiftregister sr(clk, sclk_pos, parallel_load, parallel_in, serial_in, parallel_out, serial_out);
 
 // fsm
-finiteStateMachine fsm(clk, cs_con, sclk_pos, parallel_out[0], sr_we, dm_we, addrlatch_en, miso_en, currentstate);
+finiteStateMachine fsm(clk, cs_con, sclk_pos, parallel_out[7], sr_we, dm_we, addrlatch_en, miso_en, currentstate);
 
 // flipflop and miso buffer
 always @(posedge clk) begin
-	if (sclk_neg==1) begin
-		if (miso_en==1) begin
-			miso_pin = serial_out;
-		end		
+	if (addrlatch_en==1) dm_addr=parallel_out[6:0];
+	if (sclk_neg == 1 && miso_en==1) begin
+		miso_pin = serial_out;
 	end
+        if (dm_we==1) begin
+	$display("dm_we: %b | dm_addr: %b | dm_in: %b", addrlatch_en, dm_addr, parallel_out);
+	end
+        if (addrlatch_en==1) begin
+	$display("addrlatch_en: %b | dm_addr: %b | parallel_out: %b", addrlatch_en, dm_addr, parallel_out);
+	end
+        if (sr_we==1) begin
+	$display("sr_we: %b | dm_out: %b | dm_addr: %b| parallel_out: %b", sr_we, dm_out, dm_addr, parallel_out);
+	end
+//	if (dm_we==1) begin
+//		$display("miso_pin: %b | serial_out: %b", miso_pin, serial_out);
+//		$display("sr_we: %b | dm_out: %b | parallel_out: %b", sr_we, dm_out, mosi_con, parallel_out);
+//		$display("sr_we: %b | dm_out: %b | mosi_con: %b | dm_addr: %b", sr_we, dm_out, mosi_con, dm_addr);
+//		$display("sr_we: %b | dm_out: %b | mosi_con: %b | dm_out: %b", sr_we, dm_out, mosi_con, dm_out);
+//		$display("dm_we: %b", dm_we);
+//	end
 end
 
 endmodule
@@ -156,6 +93,7 @@ wire miso_pin;
 reg mosi_pin;
 reg faultinjector_pin;
 wire[7:0] leds;
+wire[3:0] state;
 
 // for testing fsm
 //reg cs, sclk_edge, read_write;
@@ -166,12 +104,12 @@ wire[7:0] leds;
 //finiteStateMachine dut(clk, cs, sclk_edge, read_write, sr_we, dm_we, addrlatch_en, miso_en, current);
 //
 
-spiMemory dut(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, faultinjector_pin, leds);
+spiMemory dut(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, faultinjector_pin, leds, state);
 
 initial begin clk=0; sclk_pin=0; cs_pin=1; mosi_pin=0; faultinjector_pin=0; end
 // normal clock
 always #10 clk=!clk;
-always #100 sclk_pin=!sclk_pin;
+always #300 sclk_pin=!sclk_pin;
 // serial clock
 //always #10 begin
 //	sclk_temp=sclk_temp+1;
@@ -189,48 +127,49 @@ always #100 sclk_pin=!sclk_pin;
 //end
 
 initial begin
-#500
+#200
 cs_pin=0;
+#100
 
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=0; #600
 
-mosi_pin=1; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
 
 cs_pin=1;
-#500
+#900
 cs_pin=0;
 
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=0; #200
-mosi_pin=1; #200
-mosi_pin=1; #200
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=1; #600
+mosi_pin=0; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
+mosi_pin=1; #600
 
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
-mosi_pin=0; #200
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
+mosi_pin=0; #600
 
 cs_pin=1;
 end

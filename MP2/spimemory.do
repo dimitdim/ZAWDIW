@@ -6,7 +6,9 @@ sim:/testspimemory/miso_pin \
 sim:/testspimemory/cs_pin \
 sim:/testspimemory/mosi_pin \
 sim:/testspimemory/sclk_pin \
-sim:/testspimemory/clk
+sim:/testspimemory/clk \
+sim:/testspimemory/leds \
+sim:/testspimemory/state
 
-run 10000
+run 30000
 wave zoom full
