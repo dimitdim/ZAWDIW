@@ -17,8 +17,8 @@ always @(posedge clk) begin
 	// no need to wait to see if change is consistent
 	if (conditioned == sync1) begin
 		counter <= 0;
-		positiveedge = 0;
-		negativeedge = 0;
+		positiveedge <= 0;
+		negativeedge <= 0;
 	// otherwise we check the counter
 	end else begin 
 		// if the counter is at the end point, we approve this input

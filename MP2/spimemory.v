@@ -36,6 +36,7 @@ assign dm_in=parallel_out;
 assign parallel_load=sr_we;
 assign parallel_in=dm_out;
 assign serial_in=mosi_con;
+assign leds[7]=miso_pin;
 assign leds[3]=miso_en;
 assign leds[2]=addrlatch_en;
 assign leds[1]=dm_we;
