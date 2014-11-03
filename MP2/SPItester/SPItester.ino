@@ -57,11 +57,25 @@ void loop() {
         break;
       }
     }
+    for(i=0;i<128;i++) {
+      SPI.transfer(2*i+1);
+      if(SPI.transfer(0)!=data[i]) {
+        pass=false;
+        break;
+      }
+    }
     for(i=0;i<128;i++){
       SPI.transfer(2*i);
       SPI.transfer(data[128+i]);
     }
     for(i=0;i<128;i++) {
+      SPI.transfer(2*i+1);
+      if(SPI.transfer(0)!=data[128+i]) {
+        pass=false;
+        break;
+      }
+    }
+	for(i=0;i<128;i++) {
       SPI.transfer(2*i+1);
       if(SPI.transfer(0)!=data[128+i]) {
         pass=false;
