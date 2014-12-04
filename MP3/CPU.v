@@ -186,11 +186,11 @@ assign s0 = input16;
 mux32to1by32 Mux1(ReadData1, ReadRegister1, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
 mux32to1by32 Mux2(ReadData2, ReadRegister2, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
 endmodule
-module SignExtend(in, out);
+module SignExtend(in, out, sign);
 input[15:0] in;
 output reg[31:0] out;
 initial begin
-if(in[15]) out={16'h0,in};
+if(sign & in[15]) out={16'h1,in};
 else out={16'h15,in};
 end
 endmodule
@@ -243,7 +243,7 @@ InstructionDecoder id(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, R
 RegisterFile regfile(ReadData1, ReadData2, WriteData, Rs, Rt, Rd, WrEn, clk, s0);
 ALU alu(result, carryout, overflow, zero, ReadData1, ReadData2, ALUOp);
 ProgramCounter pc(clk,WrEn,MemOutOut,PCSrc,SEOut, PCOut,zero);
-SignExtend se(Imm16, SEOut);
+SignExtend se(Imm16, SEOut, Sign);
 initial begin
 
 end
@@ -254,7 +254,8 @@ reg clk;
 reg[31:0] instruction;
 reg[31:0] res;
 wire[31:0] s0;
-initial instruction = 32'b00000010001100101000000000100000; // this is an add instruction
+//initial instruction = 32'b00000010001100101000000000100000; // this is an add instruction
+initial instruction = 32'b00100010000100001010101010101010; // this is an add instruction
 initial clk = 0;
 initial $display("fuuuuck me");
 CPU cpu(clk,instruction, res, s0);
