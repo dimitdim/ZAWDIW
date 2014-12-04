@@ -1,4 +1,10 @@
 vlog -sv -reportprogress 300 -work work CPU.v
-vsim -voptargs="+acc" TestCPU
+vsim -voptargs="+acc" CPUtest
 
-run -all
+add wave -position insertpoint \
+sim:/CPUtest/res \
+sim:/CPUtest/s0 \
+sim:/CPUtest/clk
+
+run 5000
+wave zoom full
