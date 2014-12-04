@@ -3,7 +3,7 @@ input	d;
 input	wrenable;
 input	clk;
 output reg q;
-
+initial q = 0;
 always @(posedge clk) begin
     if(wrenable) begin
 	q = d;
@@ -16,7 +16,7 @@ input[31:0]	d;
 input	wrenable;
 input	clk;
 output reg[31:0] q;
-
+initial q[31:0] = 0;
 always @(posedge clk) begin
     if(wrenable) begin
 	q = d;
@@ -102,7 +102,8 @@ module RegisterFile(ReadData1,		// Contents of first register read
                ReadRegister2,	// Address of second register to read
                WriteRegister,	// Address of register to write
                RegWrite,		// Enable writing of register when High
-               Clk);		// Clock (Positive Edge Triggered)
+               Clk,		// Clock (Positive Edge Triggered)
+               s0);
 output[31:0]	ReadData1;
 output[31:0]	ReadData2;
 input[31:0]	WriteData;
@@ -111,6 +112,7 @@ input[4:0]	ReadRegister2;
 input[4:0]	WriteRegister;
 input		RegWrite;
 input		Clk;
+input[31:0]	s0;
 wire[31:0] RegEn;
 wire[31:0] input0;
 wire[31:0] input1;
@@ -177,159 +179,7 @@ register32 Reg28(input28,WriteData,RegEn[28],Clk);
 register32 Reg29(input29,WriteData,RegEn[29],Clk);
 register32 Reg30(input30,WriteData,RegEn[30],Clk);
 register32 Reg31(input31,WriteData,RegEn[31],Clk);
+assign s0 = input16;
 mux32to1by32 Mux1(ReadData1, ReadRegister1, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
 mux32to1by32 Mux2(ReadData2, ReadRegister2, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
-endmodule
-
-// Validates your hw4testbench by connecting it to various functional 
-// or broken register files and verifying that it correctly identifies 
-module hw4testbenchharness;
-wire[31:0]	ReadData1;
-wire[31:0]	ReadData2;
-wire[31:0]	WriteData;
-wire[4:0]	ReadRegister1;
-wire[4:0]	ReadRegister2;
-wire[4:0]	WriteRegister;
-wire		RegWrite;
-wire		Clk;
-reg		begintest;
-
-// The register file being tested.  DUT = Device Under Test
-regfile DUT(ReadData1,ReadData2,WriteData, ReadRegister1, ReadRegister2,WriteRegister,RegWrite, Clk);
-
-// The test harness to test the DUT
-hw4testbench tester(begintest, endtest, dutpassed,ReadData1,ReadData2,WriteData, ReadRegister1, ReadRegister2,WriteRegister,RegWrite, Clk);
-
-
-initial begin
-begintest=0;
-#10;
-begintest=1;
-#1000;
-end
-
-always @(posedge endtest) begin
-$display(dutpassed);
-end
-
-endmodule
-
-// This is your actual test bench.
-// It generates the signals to drive a registerfile and passes it back up one layer to the harness
-//	((This lets us plug in various working / broken registerfiles to test
-// When begintest is asserted, begin testing the register file.
-// When your test is conclusive, set dutpassed as appropriate and then raise endtest.
-module hw4testbench(begintest, endtest, dutpassed,
-		    ReadData1,ReadData2,WriteData, ReadRegister1, ReadRegister2,WriteRegister,RegWrite, Clk);
-output reg endtest;
-output reg dutpassed;
-input	   begintest;
-
-input[31:0]		ReadData1;
-input[31:0]		ReadData2;
-output reg[31:0]	WriteData;
-output reg[4:0]		ReadRegister1;
-output reg[4:0]		ReadRegister2;
-output reg[4:0]		WriteRegister;
-output reg		RegWrite;
-output reg		Clk;
-
-initial begin
-WriteData=0;
-ReadRegister1=0;
-ReadRegister2=0;
-WriteRegister=0;
-RegWrite=0;
-Clk=0;
-end
-
-always @(posedge begintest) begin
-endtest = 0;
-dutpassed = 1;
-#10
-
-// Test Case 1: Write to 42 register 2, verify with Read Ports 1 and 2
-// This will pass because the example register file is hardwired to always return 42.
-WriteRegister = 2;
-WriteData = 42;
-RegWrite = 1;
-ReadRegister1 = 2;
-ReadRegister2 = 2;
-#5 Clk=1; #5 Clk=0;	// Generate Clock Edge
-if(ReadData1 != 42 || ReadData2!= 42) begin
-	dutpassed = 0;
-	$display("Test Case 1 Failed");
-end
-
-// Test Case 2: Write to 15 register 2, verify with Read Ports 1 and 2
-// This will fail with the example register file, but should pass with yours.
-WriteRegister = 2;
-WriteData = 15;
-RegWrite = 1;
-ReadRegister1 = 2;
-ReadRegister2 = 2;
-#5 Clk=1; #5 Clk=0;
-if(ReadData1 != 15 || ReadData2!= 15) begin
-	dutpassed = 0;	// On Failure, set to false.
-	$display("Test Case 2 Failed");
-	end
-
-// Test Case 3: Write to 42 register 3, but don't enable, verify with Read Ports 1 and 2
-WriteRegister = 3;
-WriteData = 42;
-RegWrite = 0;
-ReadRegister1 = 3;
-ReadRegister2 = 3;
-#5 Clk=1; #5 Clk=0;	// Generate Clock Edge
-if(ReadData1 == 42 || ReadData2 == 42) begin
-	dutpassed = 0;
-	$display("Write Enable is broken/ignored - Register is always written to");
-end
-
-// Test Case 4: Write to 42 register 4, verify register 5 is still 0 with Read Ports 1 and 2
-WriteRegister = 4;
-WriteData = 42;
-RegWrite = 1;
-ReadRegister1 = 5;
-ReadRegister2 = 5;
-#5 Clk=1; #5 Clk=0;	// Generate Clock Edge
-if(ReadData1 == 42 || ReadData2 == 42) begin
-	dutpassed = 0;
-	$display("Decoder is broken - All registers are written to");
-end
-
-
-// Test Case 5: Write to 42 register 0, verify it's still 0 with Read Ports 1 and 2
-WriteRegister = 0;
-WriteData = 42;
-RegWrite = 1;
-ReadRegister1 = 0;
-ReadRegister2 = 0;
-#5 Clk=1; #5 Clk=0;	// Generate Clock Edge
-if(ReadData1 != 0 || ReadData2 != 0) begin
-	dutpassed = 0;
-	$display("Register Zero is acutally a register instead of the constant value zero");
-end
-
-
-// Test Case 6: Write to 42 register 2, verify with Read Ports 1 and 2
-WriteRegister = 2;
-WriteData = 42;
-RegWrite = 1;
-ReadRegister1 = 2;
-ReadRegister2 = 2;
-#5 Clk=1; #5 Clk=0;	// Generate Clock Edge
-if(ReadData1 == 17 || ReadData2 == 17) begin
-	dutpassed = 0;
-	$display("Port 2 is broken and always reads register 17");
-end
-
-if(dutpassed == 1) begin
-$display("Congratulations! Your refile is perfect!");
-end
-//We're done!  Wait a moment and signal completion.
-#5
-endtest = 1;
-end
-
 endmodule
