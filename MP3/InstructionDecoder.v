@@ -7,7 +7,7 @@ output reg[15:0] Imm16;
 output reg[2:0] ALUOp;
 output reg[4:0] Rt, Rs, Rd;
 
-wire[5:0] opcode = instruction[5:0];
+wire[5:0] opcode = instruction[31:26];
 
 reg[4:0] shiftAmt;
 reg[5:0] func;
@@ -23,11 +23,11 @@ MemOut = 0;
 RegDst = 0;
 RegWr = 1;
 
-Rs = instruction[10:6];
-Rt = instruction[15:11];
-Rd = instruction[20:16];
-shiftAmt = instruction[25:21];
-func = instruction[31:26];
+Rs = instruction[25:21];
+Rt = instruction[20:16];
+Rd = instruction[15:11];
+shiftAmt = instruction[10:6];
+func = instruction[5:0];
 
 // If func is add, ALU Op is add
 if (func == 6'b100000) begin
@@ -38,7 +38,22 @@ ALUOp = 3'd1;
 end // if func == add
 
 end // if opcode == 0
+
+if (opcode == 6'b001000) begin
+Rs = instruction[25:21];
+Rt = instruction[20:16];
+Imm16 = instruction[15:0];
+
+ALUSrc = 1;
+PCSrc = 0;
+PCWr = 0;
+DmWr = 0;
+MemOut = 0;
+RegDst = 1;
+RegWr = 1;
+
 end // always @(posedge clk)
+end
 
 endmodule
 
