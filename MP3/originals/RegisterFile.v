@@ -95,7 +95,7 @@ input[4:0] address;
 assign out = enable<<address;
 endmodule
 
-module regfile(ReadData1,		// Contents of first register read
+module RegisterFile(ReadData1,		// Contents of first register read
                ReadData2,		// Contents of second register read
                WriteData,		// Contents to write to register
                ReadRegister1,	// Address of first register to read 
