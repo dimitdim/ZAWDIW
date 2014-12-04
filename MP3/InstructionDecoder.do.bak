@@ -1,3 +1,8 @@
 vlog -reportprogress 300 -work work InstructionDecoder.v
-vsim -voptargs="+acc" InstructionDecoder
-run -all
+vsim -voptargs="+acc" TestInstructionDecoder
+
+add wave -position insertpoint \
+sim:/TestInstructionDecoder/ALUOp \
+sim:/TestInstructionDecoder/clk
+
+run 1000

@@ -8,47 +8,589 @@ z2
 !i10f 100
 cModel Technology
 Z0 dC:/ZAWDIW/MP3
-vInstructionDecoder
-Z1 !s110 1417567389
+vALU
+Z1 DXx6 sv_std 3 std 0 22 <EOTafDcUY:cQeO^ICn]m3
+Z2 !s110 1417660109
 !i10b 1
-!s100 c16JL;k7=fXZzLB@OzgVH3
-Ife_7YoI7K?BThVA2?UMfW0
-Z2 V`JN@9S9cnhjKRR_L]QIcM3
+!s100 Q_AR>@IBN<o;V4dkHeOOk1
+IdAXMK7@^TNk9z>OaJgPij2
+Z3 V`JN@9S9cnhjKRR_L]QIcM3
+Z4 !s105 CPU_v_unit
+S1
 R0
-Z3 w1417567387
-Z4 8InstructionDecoder.v
-Z5 FInstructionDecoder.v
-L0 1
-Z6 OP;L;10.3c;59
+Z5 w1417660105
+Z6 FALU.v
+Z7 8CPU.v
+Z8 FCPU.v
+L0 110
+Z9 OP;L;10.3c;59
 r1
 !s85 0
 31
-Z7 !s108 1417567389.006000
-Z8 !s107 InstructionDecoder.v|
-Z9 !s90 -reportprogress|300|-work|work|InstructionDecoder.v|
+Z10 !s108 1417660109.251000
+Z11 !s107 RegisterFile.v|ALU.v|InstructionDecoder.v|CPU.v|
+Z12 !s90 -sv|-reportprogress|300|-work|work|CPU.v|
 !s101 -O0
 !i113 1
-Z10 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
-n@instruction@decoder
-vTestInstructionDecoder
+Z13 o-sv -work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
+n@a@l@u
+vALU_slice
 R1
-!i10b 1
-!s100 aZY8ZWD7c=C:EZ<5ji`B91
-IPEO:DGUEe342>[F=jRiZ73
 R2
-R0
+!i10b 1
+!s100 e0;j1]6FRUfM>_^UkPk1<1
+IVMgDC?9dhEBgeV7HdnFM83
 R3
 R4
+S1
+R0
 R5
-L0 21
 R6
+R7
+R8
+L0 56
+R9
 r1
 !s85 0
 31
-R7
-R8
-R9
+R10
+R11
+R12
 !s101 -O0
 !i113 1
+R13
+n@a@l@u_slice
+vALUcontrolLUT
+R1
+R2
+!i10b 1
+!s100 =TSH_H]Oidk=2`lj@b6Wk2
+I7YmTCg_S^h1^32nn:C5RO2
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+R8
+L0 32
+R9
+r1
+!s85 0
+31
 R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@a@l@ucontrol@l@u@t
+vCPU
+R1
+R2
+!i10b 1
+!s100 J@1D5?D_24;0zTMh`cCnh3
+ImikiQZKngo]49K7D_3D7]0
+R3
+R4
+S1
+R0
+R5
+R7
+R8
+L0 5
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@c@p@u
+vdecoder1to32
+R1
+R2
+!i10b 1
+!s100 SAk;5bVd`Zbm7zK=UDIM72
+I;J8J@KODn<lfO6lO7;Rb>1
+R3
+R4
+S1
+R0
+R5
+Z14 FRegisterFile.v
+R7
+R8
+L0 90
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vFullAdder1bit
+R1
+R2
+!i10b 1
+!s100 1Qhczd]m]fAB8jR5IO==b3
+IIK8_H9kM_:kP:cIi3h;XY0
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+R8
+L0 13
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@full@adder1bit
+vhw4testbench
+R1
+R2
+!i10b 1
+!s100 e^iT8L^?iRDjR?dDa;l;X1
+IUo9QB@O9lc`zj][h]^MP`1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 222
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vhw4testbenchharness
+R1
+R2
+!i10b 1
+!s100 kUKH;?inX^eLF3l96H0g=1
+Ik3XA<NU`@^1T=KLBGmOKT3
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 186
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vInstructionDecoder
+R1
+R2
+!i10b 1
+!s100 0a<fLof]Y=BMIWbN5GS3R1
+I_NK6CkETC88Bd]cPnQkTX0
+R3
+R4
+S1
+R0
+R5
+Z15 FInstructionDecoder.v
+R7
+R8
+L0 1
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@instruction@decoder
+vMUX
+R1
+R2
+!i10b 1
+!s100 N?bkUHX9n4k>9cALa]7OO3
+IXTHS4=]KiQ9J8Qf>ZNXj_2
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+R8
+L0 89
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@m@u@x
+vmux32to1by1
+R1
+R2
+!i10b 1
+!s100 ?7DFMYTn`Q>^G=n>bNlUG0
+IS4hAUYFf9VeLLz7;BoNVX3
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 40
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vmux32to1by32
+R1
+R2
+!i10b 1
+!s100 CGbEf9?=PaDE5E3ENOC]k2
+IgDk]BGfmh3V;J?FQnI?^@1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 48
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vmux32to1by32_better
+R1
+Z16 !s110 1417656171
+!i10b 1
+!s100 _8DKRZhUDdk8L>zQALbn40
+IT]2hVTiUP1IazPN4Q[IW60
+R3
+R4
+S1
+R0
+Z17 w1417656139
+Fregfile_hw\muxes.v
+Z18 Fregfile_hw/RegisterFile.v
+R7
+R8
+L0 63
+R9
+r1
+!s85 0
+31
+Z19 !s108 1417656171.515000
+Z20 !s107 regfile_hw\register.v|regfile_hw\muxes.v|regfile_hw\decoders.v|regfile_hw/RegisterFile.v|ALU.v|InstructionDecoder.v|CPU.v|
+R12
+!s101 -O0
+!i113 1
+R13
+vregfile
+R1
+R2
+!i10b 1
+!s100 ?h?<MUO8kUU1YJSmhQ3Yn3
+Ik6nS92lQW553^AZmT?SC@1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 98
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vregister
+R1
+R2
+!i10b 1
+!s100 eZ5m70^[hS`Qhb9z46>1Z0
+IalCQP>XH9>R5ZH2gZ59WI1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 1
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vregister32
+R1
+R2
+!i10b 1
+!s100 W?`GkC8Bc^`Ucl8No<bNl3
+IUZHBnLLX`A^FVD>4Ok:DJ1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 14
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vregister32zero
+R1
+R2
+!i10b 1
+!s100 ^OJSVFAAb6Z4J_=CJbM473
+Id=<K<SoM9g6b7;_@jn?kR1
+R3
+R4
+S1
+R0
+R5
+R14
+R7
+R8
+L0 27
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+vRegisterFile
+R1
+!s110 1417658016
+!i10b 1
+!s100 <EId2@HN_2n]U=P5XHb870
+I7=[?Q0NSm:SFkWHONl;g<1
+R3
+R4
+S1
+R0
+w1417658016
+8RegisterFile.v
+R14
+L0 101
+R9
+r1
+!s85 0
+31
+!s108 1417658016.533000
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@register@file
+vtest_ALU
+R1
+R2
+!i10b 1
+!s100 Lm2LP]^hDZ556BQKJUSbe0
+I]dl@lz:oV]HRMMBJ4STTW0
+R3
+R4
+S1
+R0
+R5
+R6
+R7
+R8
+L0 151
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+ntest_@a@l@u
+vTestCPU
+R1
+R2
+!i10b 1
+!s100 C5eMS[Y>zAZSd?5Bii8U92
+IOgf>EjRL0^6S:_l[Lkd2e1
+R3
+R4
+S1
+R0
+R5
+R7
+R8
+L0 16
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
+n@test@c@p@u
+vtestdecoder
+R1
+R16
+!i10b 1
+!s100 EI0B=A5PO>?iZ6:47c_nZ1
+ID>iSgGG@jHjGQhlkdG6l:0
+R3
+R4
+S1
+R0
+R17
+Fregfile_hw\decoders.v
+R18
+R7
+R8
+L0 17
+R9
+r1
+!s85 0
+31
+R19
+R20
+R12
+!s101 -O0
+!i113 1
+R13
+vTestInstructionDecoder
+R1
+R2
+!i10b 1
+!s100 J^>FMYiL>A4TNn5e2KTLc0
+IIhb]>i3;:RzIaS=Z`e_9P3
+R3
+R4
+S1
+R0
+R5
+R15
+R7
+R8
+L0 45
+R9
+r1
+!s85 0
+31
+R10
+R11
+R12
+!s101 -O0
+!i113 1
+R13
 n@test@instruction@decoder
+vtestregisters
+R1
+R16
+!i10b 1
+!s100 AengLRF]GnUIb[cWICPP@2
+I0jl9cbPMM=^dD^6zc2k7B1
+R3
+R4
+S1
+R0
+R17
+Fregfile_hw\register.v
+R18
+R7
+R8
+L0 46
+R9
+r1
+!s85 0
+31
+R19
+R20
+R12
+!s101 -O0
+!i113 1
+R13
