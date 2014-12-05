@@ -45,7 +45,7 @@ reg[31:0] instruction;
 reg[31:0] res;
 wire[31:0] s0;
 //initial instruction = 32'b00000010001100101000000000100000; // this is an add instruction
-initial instruction = 32'b00100010000100001010101010101010; // this is an add instruction
+initial instruction = 32'b00100010001100001010101010101010; // this is an add instruction
 initial clk = 0;
 initial $display("fuuuuck me");
 CPU cpu(clk,instruction, res, s0);

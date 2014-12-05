@@ -183,3 +183,41 @@ assign s0 = input16;
 mux32to1by32 Mux1(ReadData1, ReadRegister1, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
 mux32to1by32 Mux2(ReadData2, ReadRegister2, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
 endmodule
+
+module RegisterTest;
+reg clk;
+reg[4:0] ReadRegister1, ReadRegister2, WriteRegister;
+reg RegWrite;
+reg[31:0] WriteData;
+wire[31:0] ReadData1, ReadData2, s0;
+
+RegisterFile rfile(ReadData1,		// Contents of first register read
+               ReadData2,		// Contents of second register read
+               WriteData,		// Contents to write to register
+               ReadRegister1,	// Address of first register to read 
+               ReadRegister2,	// Address of second register to read
+               WriteRegister,	// Address of register to write
+               RegWrite,		// Enable writing of register when High
+               clk,		// Clock (Positive Edge Triggered)
+               s0);
+initial clk=0;
+always #500 clk=!clk;
+initial begin
+RegWrite = 0;
+WriteRegister = 0;
+WriteData = 0;
+ReadRegister1 = 16;
+ReadRegister2 = 00000;
+#500 $display("%b", ReadData1);
+$display("%b", s0);
+#200
+RegWrite = 1;
+WriteRegister = 16;
+WriteData = 2467;
+#1800 $display("%b", ReadData1);
+$display("%b", s0);
+#1000 $display("%b", ReadData1);
+$display("%b", s0);
+end
+
+endmodule
