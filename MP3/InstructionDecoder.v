@@ -115,7 +115,7 @@ Rd <= 0;
 shiftAmt <= 0;
 func <= 0;
 end // if (opcode == 6'b100011)
-else if (opcode == 6'b100011) begin // beq
+else if (opcode == 6'b000100) begin // beq
 Bananna <= 0;
 ALUSrc <= 0;
 PCSrc <= 1;
@@ -123,7 +123,7 @@ PCWr <= 0;
 DmWr <= 0;
 MemOut <= 0;
 RegDst <= 0;
-RegWr <= 1;
+RegWr <= 0;
 ALUOp <= 3'd1;
 
 Rs <= instruction[25:21];
@@ -133,7 +133,7 @@ Rd <= 0;
 
 shiftAmt <= 0;
 func <= 0;
-end // if (opcode == 6'b100011) 
+end // if (opcode == 6'b000100) 
 else if (opcode == 6'b000010) begin // j
 Bananna <= 0;
 ALUSrc <= 0;

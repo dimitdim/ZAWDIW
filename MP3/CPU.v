@@ -22,7 +22,7 @@ assign pc = PCOut;
 assign inst=instruction;
 //assign instruction=custom_instruction
 
-ProgramCounter PC(clk, PCWr, MemOutOut, PCSrc, SEOut, PCOut, zero);
+ProgramCounter PC(clk, PCWr, MemOutOut, PCSrc, SEOut, Imm26, PCOut, zero, ALUOp);
 memory mem(clk, regWE, PCOut, MemOutOut, instruction);
 InstructionDecoder id(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE, Imm26);
 mux32to1by2 BanannaMux(BanannaOut, Bananna, MemOutOut, PCOut);
@@ -42,7 +42,7 @@ wire[31:0] status, s0, pc, inst;
 CPU cpu(clk,instruction, status, s0, pc, inst);
 initial clk = 0;
 always #50 clk=!clk;
-always #100 $display($time, ": pc: %h (%d) instruction: %h status: %b  s0: %d",pc,(pc/4),inst,status,s0);
+always #100 $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0);
 // initial begin
 // instruction = 32'b00100000000100010000000000000101; // store 5 in 17(s1)
 // #25
