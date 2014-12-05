@@ -1,4 +1,4 @@
-module ProgramCounter(clk,WrEn,DIn,Src,Imm,Out,Zero);
+module ProgramCounter(clk,WrEn,DIn,Src,Imm,Out,Zero,Out4);
 input clk;
 input WrEn;
 input [31:0] DIn;
@@ -6,6 +6,7 @@ input Src;
 input [31:0] Imm;
 input Zero;
 output reg [31:0] Out;
+output reg [31:0] Out4;
 
 initial Out=0;
 
@@ -13,6 +14,7 @@ always @(posedge clk) begin
 if(WrEn) Out=DIn;
 else if(Src) Out=(Out&32'hf0000000)|(Imm<<2);
 else Out=Out+4;
+Out4=Out+4;
 end
 endmodule
 
