@@ -12,7 +12,7 @@ initial Out=0;
 always @(posedge clk) begin
 Out=Out+4;
 if(Src) Out=Out+(Imm<<2);
-if(WrEn & Zero) Out=DIn;
+if(WrEn) Out=DIn;
 end
 endmodule
 

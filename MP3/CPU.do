@@ -6,5 +6,5 @@ sim:/CPUtest/status \
 sim:/CPUtest/s0 \
 sim:/CPUtest/clk
 
-run 500
+run 1500
 wave zoom full

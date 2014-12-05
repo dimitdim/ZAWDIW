@@ -17,7 +17,7 @@ wire[15:0] Imm16;
 wire[25:0] Imm26;
 wire[31:0] BanannaOut, ALUSrcOut, MemOutOut, SEOut, PCOut, dataOut, result, ReadData1, ReadData2, instruction;
 
-assign out = BanannaOut;
+assign out = result;
 assign pc = PCOut;
 assign inst=instruction;
 //assign instruction=custom_instruction
@@ -42,17 +42,23 @@ wire[31:0] status, s0, pc, inst;
 CPU cpu(clk,instruction, status, s0, pc, inst);
 initial clk = 0;
 always #50 clk=!clk;
-
-initial begin
-instruction = 32'b00100000000100010000000000000101; // store 5 in 17(s1)
-#25
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
-instruction = 32'b00100000000100100000000000010011; // store 19 in 18(s2) 
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
-instruction = 32'b00000010001100101000000000100000; // store their sum in  16(s0)
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
-$display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0);
-end
+always #100 $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0);
+// initial begin
+// instruction = 32'b00100000000100010000000000000101; // store 5 in 17(s1)
+// #25
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// instruction = 32'b00100000000100100000000000010011; // store 19 in 18(s2)
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// instruction = 32'b00000010001100101000000000100000; // store their sum in  16(s0)
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0); #100
+// $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0);
+// end
 endmodule
