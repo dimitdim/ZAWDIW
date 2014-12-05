@@ -1,4 +1,4 @@
-module InstructionDecoder(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE);
+module InstructionDecoder(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE, Imm26);
 input clk;
 input[31:0] instruction;
 output reg RegWr, PCWr, MemOut, ALUSrc, DmWr, RegDst, PCSrc, Bananna, regWE;
@@ -33,7 +33,6 @@ Imm26 <= 0;
 end
 
 always @( * ) begin
-
 if (opcode == 6'b000000) begin // if this is an R type instruction, do R type stuff
 //same for all r-type
 Bananna <= 0;

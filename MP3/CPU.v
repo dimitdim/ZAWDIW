@@ -24,7 +24,7 @@ assign inst=instruction;
 
 ProgramCounter PC(clk, PCWr, MemOutOut, PCSrc, SEOut, PCOut, zero);
 memory mem(clk, regWE, PCOut, MemOutOut, instruction);
-InstructionDecoder id(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE);
+InstructionDecoder id(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE, Imm26);
 mux32to1by2 BanannaMux(BanannaOut, Bananna, MemOutOut, PCOut);
 mux5to1by2 RegDestMux(RegDestOut, RegDst, Rd, Rt);
 RegisterFile regfile(ReadData1, ReadData2, BanannaOut, Rs, Rt, RegDestOut, RegWr, clk, s0);
