@@ -1,7 +1,7 @@
-module InstructionDecoder(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna);
+module InstructionDecoder(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE);
 input clk;
 input[31:0] instruction;
-output reg RegWr, PCWr, MemOut, ALUSrc, DmWr, RegDst, PCSrc, Bananna;
+output reg RegWr, PCWr, MemOut, ALUSrc, DmWr, RegDst, PCSrc, Bananna, regWE;
 output reg[15:0] Imm16;
 output reg[2:0] ALUOp;
 output reg[4:0] Rt, Rs, Rd;
@@ -27,6 +27,7 @@ Rd <= 0;
 shiftAmt <= 0;
 func <= 0;
 Imm16 <= 0;
+regWE <=0;
 end
 
 always @( * ) begin

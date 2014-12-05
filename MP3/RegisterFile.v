@@ -1,16 +1,3 @@
-module register(q, d, wrenable, clk);
-input	d;
-input	wrenable;
-input	clk;
-output reg q;
-initial q = 0;
-always @(posedge clk) begin
-    if(wrenable) begin
-	q = d;
-    end
-end
-endmodule
-
 module register32(q, d, wrenable, clk, num);
 input[4:0] num;
 input[31:0]	d;
@@ -21,21 +8,7 @@ initial q[31:0] = 0;
 always @(posedge clk) begin
     if(wrenable) begin
 	$display($time, ": %d: %d -> %d",num,q,d);
-	q = d;
-    end
-end
-endmodule
-
-module register32zero(q, d, wrenable, clk);
-input[31:0]	d;
-input	wrenable;
-input	clk;
-output reg[31:0] q;
-initial q[31:0] = 0;
-always @(posedge clk) begin
-    if(wrenable) begin
-	$display($time, ": 0: %d -> %d",q,d);
-	q[31:0] = 0;
+	if(num) q = d;
     end
 end
 endmodule
@@ -150,36 +123,36 @@ wire[31:0] input29;
 wire[31:0] input30;
 wire[31:0] input31;
 decoder1to32 Dec(RegEn,RegWrite,WriteRegister);
-register32zero Reg0(input0,WriteData,RegEn[0],Clk);
-register32 Reg1(input1,WriteData,RegEn[1],Clk,1);
-register32 Reg2(input2,WriteData,RegEn[2],Clk,2);
-register32 Reg3(input3,WriteData,RegEn[3],Clk,3);
-register32 Reg4(input4,WriteData,RegEn[4],Clk,4);
-register32 Reg5(input5,WriteData,RegEn[5],Clk,5);
-register32 Reg6(input6,WriteData,RegEn[6],Clk,6);
-register32 Reg7(input7,WriteData,RegEn[7],Clk,7);
-register32 Reg8(input8,WriteData,RegEn[8],Clk,8);
-register32 Reg9(input9,WriteData,RegEn[9],Clk,9);
-register32 Reg10(input10,WriteData,RegEn[10],Clk,10);
-register32 Reg11(input11,WriteData,RegEn[11],Clk,11);
-register32 Reg12(input12,WriteData,RegEn[12],Clk,12);
-register32 Reg13(input13,WriteData,RegEn[13],Clk,13);
-register32 Reg14(input14,WriteData,RegEn[14],Clk,14);
-register32 Reg15(input15,WriteData,RegEn[15],Clk,15);
-register32 Reg16(input16,WriteData,RegEn[16],Clk,16);
-register32 Reg17(input17,WriteData,RegEn[17],Clk,17);
-register32 Reg18(input18,WriteData,RegEn[18],Clk,18);
-register32 Reg19(input19,WriteData,RegEn[19],Clk,19);
-register32 Reg20(input20,WriteData,RegEn[20],Clk,20);
-register32 Reg21(input21,WriteData,RegEn[21],Clk,21);
-register32 Reg22(input22,WriteData,RegEn[22],Clk,22);
-register32 Reg23(input23,WriteData,RegEn[23],Clk,23);
-register32 Reg24(input24,WriteData,RegEn[24],Clk,24);
-register32 Reg25(input25,WriteData,RegEn[25],Clk,25);
-register32 Reg26(input26,WriteData,RegEn[26],Clk,26);
-register32 Reg27(input27,WriteData,RegEn[27],Clk,27);
-register32 Reg28(input28,WriteData,RegEn[28],Clk,28);
-register32 Reg29(input29,WriteData,RegEn[29],Clk,29);
+register32 Reg0(input0,WriteData,RegEn[0],Clk,5'd1);
+register32 Reg1(input1,WriteData,RegEn[1],Clk,5'd1);
+register32 Reg2(input2,WriteData,RegEn[2],Clk,5'd2);
+register32 Reg3(input3,WriteData,RegEn[3],Clk,5'd3);
+register32 Reg4(input4,WriteData,RegEn[4],Clk,5'd4);
+register32 Reg5(input5,WriteData,RegEn[5],Clk,5'd5);
+register32 Reg6(input6,WriteData,RegEn[6],Clk,5'd6);
+register32 Reg7(input7,WriteData,RegEn[7],Clk,5'd7);
+register32 Reg8(input8,WriteData,RegEn[8],Clk,5'd8);
+register32 Reg9(input9,WriteData,RegEn[9],Clk,5'd9);
+register32 Reg10(input10,WriteData,RegEn[10],Clk,5'd10);
+register32 Reg11(input11,WriteData,RegEn[11],Clk,5'd11);
+register32 Reg12(input12,WriteData,RegEn[12],Clk,5'd12);
+register32 Reg13(input13,WriteData,RegEn[13],Clk,5'd13);
+register32 Reg14(input14,WriteData,RegEn[14],Clk,5'd14);
+register32 Reg15(input15,WriteData,RegEn[15],Clk,5'd15);
+register32 Reg16(input16,WriteData,RegEn[16],Clk,5'd16);
+register32 Reg17(input17,WriteData,RegEn[17],Clk,5'd17);
+register32 Reg18(input18,WriteData,RegEn[18],Clk,5'd18);
+register32 Reg19(input19,WriteData,RegEn[19],Clk,5'd19);
+register32 Reg20(input20,WriteData,RegEn[20],Clk,5'd20);
+register32 Reg21(input21,WriteData,RegEn[21],Clk,5'd21);
+register32 Reg22(input22,WriteData,RegEn[22],Clk,5'd22);
+register32 Reg23(input23,WriteData,RegEn[23],Clk,5'd23);
+register32 Reg24(input24,WriteData,RegEn[24],Clk,5'd24);
+register32 Reg25(input25,WriteData,RegEn[25],Clk,5'd25);
+register32 Reg26(input26,WriteData,RegEn[26],Clk,5'd26);
+register32 Reg27(input27,WriteData,RegEn[27],Clk,5'd27);
+register32 Reg28(input28,WriteData,RegEn[28],Clk,5'd28);
+register32 Reg29(input29,WriteData,RegEn[29],Clk,5'd29);
 register32 Reg30(input30,WriteData,RegEn[30],Clk,5'd30);
 register32 Reg31(input31,WriteData,RegEn[31],Clk,5'd31);
 assign s0 = input16;
