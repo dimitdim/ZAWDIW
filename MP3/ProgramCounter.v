@@ -1,10 +1,14 @@
-module ProgramCounter(clk,WrEn,DIn,Src,Imm,Out,Zero,Out4);
+
+module ProgramCounter(clk,WrEn,DIn,Src,Imm16,Imm26,Out,Out4,Zero,ALUOp);
+
 input clk;
 input WrEn;
 input [31:0] DIn;
 input Src;
-input [31:0] Imm;
+input [25:0] Imm26;
+input [15:0] Imm16;
 input Zero;
+input[2:0] ALUOp;
 output reg [31:0] Out;
 output reg [31:0] Out4;
 
@@ -12,10 +16,14 @@ initial Out=0;
 
 always @(posedge clk) begin
 if(WrEn) Out=DIn;
-else if(Src) Out=(Out&32'hf0000000)|(Imm<<2);
+else if(Zero&ALUOp[0]) begin Out = Out + Imm16<<2; $display("hifenfeoaefn"); end
+else if(Src) Out=(Out&32'hf0000000)|(Imm26<<2);
 else Out=Out+4;
+
 Out4=Out+4;
+
 end
+
 endmodule
 
 module TestProgramCounter;
