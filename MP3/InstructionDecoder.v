@@ -118,12 +118,12 @@ end // if (opcode == 6'b100011)
 else if (opcode == 6'b100011) begin // beq
 Bananna <= 0;
 ALUSrc <= 0;
-PCSrc <= 1;
+PCSrc <= 0;
 PCWr <= 0;
 DmWr <= 0;
 MemOut <= 0;
 RegDst <= 0;
-RegWr <= 1;
+RegWr <= 0;
 ALUOp <= 3'd1;
 
 Rs <= instruction[25:21];
