@@ -15,17 +15,19 @@ wire[2:0] ALUOp;
 wire[4:0] Rt, Rs, Rd, RegDestOut;
 wire[15:0] Imm16;
 wire[25:0] Imm26;
-wire[31:0] BanannaOut, ALUSrcOut, MemOutOut, SEOut, PCOut, dataOut, result, ReadData1, ReadData2, instruction;
+wire[31:0] BanannaOut, ALUSrcOut, MemOutOut, SEOut, PCOut, PCOut4, dataOut, result, ReadData1, ReadData2, instruction;
 
 assign out = result;
 assign pc = PCOut;
 assign inst=instruction;
 //assign instruction=custom_instruction
 
-ProgramCounter PC(clk, PCWr, MemOutOut, PCSrc, SEOut, Imm26, PCOut, zero, ALUOp);
+
+ProgramCounter PC(clk, PCWr, MemOutOut, PCSrc, SEOut, Imm26, PCOut, PCOut4, zero, ALUOp);
+
 memory mem(clk, regWE, PCOut, MemOutOut, instruction);
 InstructionDecoder id(clk, instruction, RegWr, PCWr, MemOut, ALUSrc, DmWr, Rt, Rs, Rd, RegDst, Imm16, ALUOp, PCSrc, Bananna, regWE, Imm26);
-mux32to1by2 BanannaMux(BanannaOut, Bananna, MemOutOut, PCOut);
+mux32to1by2 BanannaMux(BanannaOut, Bananna, MemOutOut, PCOut4);
 mux5to1by2 RegDestMux(RegDestOut, RegDst, Rd, Rt);
 RegisterFile regfile(ReadData1, ReadData2, BanannaOut, Rs, Rt, RegDestOut, RegWr, clk, s0);
 SignExtend se(Imm16, Imm26, SEOut, Sign, clk);
