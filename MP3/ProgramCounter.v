@@ -10,9 +10,9 @@ output reg [31:0] Out;
 initial Out=0;
 
 always @(posedge clk) begin
-Out=Out+4;
-if(Src) Out=Out+(Imm<<2);
 if(WrEn) Out=DIn;
+else if(Src) Out=(Out&32'hf0000000)|(Imm<<2);
+else Out=Out+4;
 end
 endmodule
 

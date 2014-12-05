@@ -137,12 +137,12 @@ end // if (opcode == 6'b100011)
 else if (opcode == 6'b000010) begin // j
 Bananna <= 0;
 ALUSrc <= 0;
-PCSrc <= 0;
-PCWr <= 1;
+PCSrc <= 1;
+PCWr <= 0;
 DmWr <= 0;
 MemOut <= 0;
 RegDst <= 0;
-RegWr <= 1;
+RegWr <= 0;
 ALUOp <= 3'd0;
 
 Rs <= 0;
@@ -152,21 +152,22 @@ Rd <= 0;
 
 shiftAmt <= 0;
 func <= 0;
+Imm26 <= instruction[25:0];
 end // if (opcode == 6'b000010)
 else if (opcode == 6'b000011) begin // jal
 Imm26 <= instruction[25:0];
 
 Bananna <= 1;
-ALUSrc <= 1;
-PCSrc <= 0;
-PCWr <= 1;
+ALUSrc <= 0;
+PCSrc <= 1;
+PCWr <= 0;
 DmWr <= 0;
 MemOut <= 0;
 RegDst <= 1;
 RegWr <= 1;
 ALUOp <= 3'd0;
 Rs <= 0;
-Rt <= 0;
+Rt <= 5'b11111;
 Imm16 <= 0;
 Rd <= 0;
 shiftAmt <= 0;

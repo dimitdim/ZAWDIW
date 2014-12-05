@@ -42,7 +42,7 @@ wire[31:0] status, s0, pc, inst;
 CPU cpu(clk,instruction, status, s0, pc, inst);
 initial clk = 0;
 always #50 clk=!clk;
-always #100 $display($time, ": pc: %h instruction: %h status: %b  s0: %d",pc,inst,status,s0);
+always #100 $display($time, ": pc: %h (%d) instruction: %h status: %b  s0: %d",pc,(pc/4),inst,status,s0);
 // initial begin
 // instruction = 32'b00100000000100010000000000000101; // store 5 in 17(s1)
 // #25
