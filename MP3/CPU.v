@@ -37,23 +37,22 @@ reg[31:0] instruction;
 wire[31:0] res, s0;
 CPU cpu(clk,instruction, res, s0);
 initial begin
-instruction = 32'b00100010001100001010101010101010; // this is an addi instruction
-//instruction = 32'b00000010001100101000000000100000; // this is an add instruction
+instruction = 32'b00100010000100001010101010101010; // this is an addi instruction
+//instruction = 32'b00000010001100011000000000100000; // this is an add instruction
 clk = 0;
 end
-always #500 clk=!clk;
+always #50 clk=!clk;
 
 initial begin
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); #500
-$display("res: %b  s0: %b", res,s0); 
+instruction = 32'b00100000000100010000000000000101; // store 5 in 17(s1)
+$display($time, ": res: %b  s0: %b", res,s0); #25
+$display($time, ": res: %b  s0: %b", res,s0); #75
+instruction = 32'b00100000000100100000000000010011; // store 19 in 18(s2) 
+$display($time, ": res: %b  s0: %b", res,s0); #100
+instruction = 32'b00000010001100101000000000100000; // store their sum in  16(s0)
+$display($time, ": res: %b  s0: %b", res,s0); #100
+$display($time, ": res: %b  s0: %b", res,s0); #100
+$display($time, ": res: %b  s0: %b", res,s0); #100
+$display($time, ": res: %b  s0: %b", res,s0);
 end
 endmodule

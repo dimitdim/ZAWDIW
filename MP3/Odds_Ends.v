@@ -2,7 +2,9 @@ module SignExtend(in, out, sign, clk);
 input[15:0] in;
 input sign, clk;
 output reg[31:0] out;
-always @(posedge clk) begin
+initial out=32'd0;
+always @( * ) begin
+$display($time, ": dickbutt - %b",in);
 if(sign & in[15]) out={16'b111111111111111,in[15:0]};
 else out={16'b0000000000000000,in[15:0]};
 end
